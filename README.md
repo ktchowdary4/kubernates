@@ -1,2 +1,0 @@
-# kubernates
-kubernates
