@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: springbootapp-mysql
+  labels:
+    app: springbootapp
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: springbootapp
+    tier: mysql
+  clusterIP: None
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: springbootapp
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springbootapp-mysql
+  labels:
+    app: springbootapp
+spec:
+  selector:
+    matchLabels:
+      app: springbootapp
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: springbootapp
+        tier: mysql
+    spec:
+      
